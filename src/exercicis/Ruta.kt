@@ -60,10 +60,18 @@ class Ruta (var nom: String?,
 class PuntGeo(
     var nom:String,
     var coord:Coordenades
-):Serializable
+):Serializable{
+    override fun toString(): String {
+        return "Punt'$nom', $coord"
+    }
+}
 
 class Coordenades (
     var latitud:Double,
     var longitud:Double
-):Serializable
+):Serializable{
+    override fun toString(): String {
+        return "latitud: $latitud, longitud: $longitud)"
+    }
+}
 
