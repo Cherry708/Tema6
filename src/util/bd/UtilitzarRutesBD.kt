@@ -14,18 +14,19 @@ fun main(args: Array<String>) {
     val longituds = arrayOf(-0.166962, -0.227611, -0.263560, -0.296690, -0.316947, -0.354052)
 
     val punts = arrayListOf<PuntGeo>()
-    for (i in noms.indices){
+    for (i in 0 until noms.size){
         punts.add(PuntGeo(noms[i], Coordenades(latituds[i], longituds[i])))
     }
 
+    //println(punts.size)
     //Añadimos una tercera ruta
-    gRutes.inserir(Ruta("Pelegrins de Les Useres",896,1738,punts))
+    //gRutes.inserir(Ruta("Pelegrins de Les Useres",896,1738, punts))
 
     /*
     IMPORTANTE:
-    Siempre eliminamos la ruta cuyo num_r = 6
+    Siempre eliminamos la ruta cuyo num_r = 4
      */
-    gRutes.esborrar(6)
+    //gRutes.esborrar(4)
 
     // Llistat de totes les rutes
     println("--- Llistat ---")

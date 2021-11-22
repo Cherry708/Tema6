@@ -50,18 +50,29 @@ class GestionarRutesBD {
          */
 
         //Los statements son conexiones, se han de cerrar
-        val statement0 = conexion.createStatement()
+        val statementConsulta = conexion.createStatement()
         val consulta = "SELECT MAX(num_r) FROM Rutes"
-        val rsNumRuta = statement0.executeQuery(consulta)
+        val rsNumRuta = statementConsulta.executeQuery(consulta)
 
         //Inserir
-        val statement = conexion.createStatement()
-        val inserir = "INSERT INTO Rutes VALUES (${rsNumRuta.getInt(1)+1},'${ruta.nom}',${ruta.desnivell},${ruta.desnivellAcumulat})"
+        val statementRuta = conexion.createStatement()
+        val inserirRuta = "INSERT INTO Rutes VALUES (${rsNumRuta.getInt(1)+1},'${ruta.nom}',${ruta.desnivell},${ruta.desnivellAcumulat})"
 
+
+        statementRuta.executeUpdate(inserirRuta)
+        statementRuta.close()
+
+        //Insertamos todos los puntos de la ruta
+        var numPunt = 0
+        for (punt in ruta.llistaDePunts){
+            val statementPunt = conexion.createStatement()
+            val inserirPunt = "INSERT INTO Punts VALUES" +
+                    "(${rsNumRuta.getInt(1)+1}, ${++numPunt}, '${punt.nom}', ${punt.coord.latitud}, ${punt.coord.longitud})"
+            statementPunt.executeUpdate(inserirPunt)
+            statementPunt.close()
+        }
+        statementConsulta.close()
         rsNumRuta.close()
-        statement0.close()
-        statement.executeUpdate(inserir)
-        statement.close()
     }
 
     /**
@@ -122,7 +133,6 @@ class GestionarRutesBD {
         val rsRuta = statement0.executeQuery(consultaRuta)
 
         val llistaDeRutes = ArrayList<Ruta>()
-        val llistaDePunts = ArrayList<PuntGeo>()
 
         while (rsRuta.next()){
             val nom = rsRuta.getString(2)
@@ -138,6 +148,7 @@ class GestionarRutesBD {
             statement1.setInt(1,rsRuta.getInt(1))
             val rsPuntos = statement1.executeQuery()
 
+            val llistaDePunts = ArrayList<PuntGeo>()
             while (rsPuntos.next()){
                 val nomPunt = rsPuntos.getString(3)
                 val latitud = rsPuntos.getDouble(4)

@@ -9,10 +9,7 @@ fun main(){
 
     val llistaRutes = bd.queryByExample<Ruta>(patro)
     for (ruta in llistaRutes) {
-        System.out.println("Nom: " + ruta.nom + ".\n desnivell: " + ruta.desnivell
-                + ".\n desnivell acumulat: " + ruta.desnivellAcumulat
-                + ".\n llista de punts:\n " + ruta.llistaDePunts
-        )
+        System.out.println(ruta.nom + ": " + ruta.llistaDePunts.size + " punts")
     }
     bd.close()
 }

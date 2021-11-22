@@ -16,6 +16,8 @@ fun main(){
     val rutesDb4o = Db4oEmbedded.openFile("Rutes.db4o")
 
     for (ruta in llistaRutes){
+        println(ruta.nom)
+        println(ruta.llistaDePunts.size)
         rutesDb4o.store(ruta)
     }
     rutesDb4o.close()
