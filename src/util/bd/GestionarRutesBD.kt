@@ -1,8 +1,8 @@
 package util.bd
 
-import exercicis.Coordenades
-import exercicis.PuntGeo
-import exercicis.Ruta
+import util.bd.Coordenades
+import util.bd.PuntGeo
+import util.bd.Ruta
 import java.sql.DriverManager
 
 

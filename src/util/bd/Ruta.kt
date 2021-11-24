@@ -1,4 +1,4 @@
-package exercicis
+package util.bd
 
 import java.io.Serializable
 
