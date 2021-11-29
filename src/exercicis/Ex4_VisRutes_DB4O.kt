@@ -34,7 +34,7 @@ class FinestraComplet : JFrame() {
     val tancar = JButton("Tancar")
 
     init {
-        defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        defaultCloseOperation = EXIT_ON_CLOSE
         setTitle("JDBC: Visualitzar Rutes Complet")
         setLayout(GridLayout(0, 1))
 
@@ -75,27 +75,35 @@ class FinestraComplet : JFrame() {
 
         primer.addActionListener {
             // instruccions per a situar-se en la primera ruta, i visualitzar-la
-
+            indexGlobal = llistaRutesGlobal.indexOfFirst { true }
+            visRuta()
         }
         anterior.addActionListener {
             // instruccions per a situar-se en la ruta anterior, i visualitzar-la
+            --indexGlobal
+            visRuta()
 
         }
         seguent.addActionListener {
             // instruccions per a situar-se en la ruta següent, i visualitzar-la
-
+            ++indexGlobal
+            visRuta()
         }
         ultim.addActionListener {
             // instruccions per a situar-se en l'últim ruta, i visualitzar-la
-
+            indexGlobal = llistaRutesGlobal.lastIndex
+            visRuta()
         }
         tancar.addActionListener {
             // instruccions per a tancar la BD i el programa
             bd.close()
+            println("Conexion cerrada.")
+            System.exit(1)
         }
 
         inicialitzar()
-        VisRuta()
+        visRuta()
+        plenarTaula(llistaRutesGlobal.get(indexGlobal).llistaDePunts)
     }
 
     fun plenarTaula(ll_punts: MutableList<PuntGeo>) {
@@ -111,31 +119,32 @@ class FinestraComplet : JFrame() {
 
     fun inicialitzar() {
         // instruccions per a inicialitzar llista i numActual
-        val patro = Ruta(null,null,null)
+        val patro = Ruta(null, null, null)
         val llistaQuery = bd.queryByExample<Ruta>(patro)
 
-        for (e in llistaQuery){
+        for (e in llistaQuery) {
             val ruta = llistaQuery.next() as Ruta
             llistaRutesGlobal.add(ruta)
-
         }
     }
 
-    fun VisRuta() {
+    fun visRuta() {
         // instruccions per a visualitzar la ruta actual (l'índex el tenim en numActual
         val ruta = llistaRutesGlobal.get(indexGlobal)
         rNom.text = ruta.nom
         rDesn.text = ruta.desnivell.toString()
         rDesnAcum.text = ruta.desnivellAcumulat.toString()
-        ActivarBotons()
+
+        plenarTaula(ruta.llistaDePunts)
+        activarButons()
     }
 
-    fun ActivarBotons() {
+    fun activarButons() {
         // instruccions per a activar o desactivar els botons de moviment ( setEnabled(Boolean) )
-        primer.isEnabled = true
-        anterior.isEnabled = true
-        seguent.isEnabled = true
-        ultim.isEnabled = true
+        primer.isEnabled = indexGlobal != 0
+        anterior.isEnabled = indexGlobal > 0
+        seguent.isEnabled = indexGlobal < llistaRutesGlobal.lastIndex
+        ultim.isEnabled = indexGlobal != llistaRutesGlobal.lastIndex
     }
 
 }
