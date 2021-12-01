@@ -123,7 +123,7 @@ class FinestraCompletDistancia : JFrame() {
         punts.setModel(javax.swing.table.DefaultTableModel(ll, caps))
     }
 
-    fun Dist(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+    fun calcularDistancia(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
 
         val R = 6378.137 // Radi de la Tierra en km
         val dLat = rad(lat2 - lat1)
@@ -150,12 +150,22 @@ class FinestraCompletDistancia : JFrame() {
         }
     }
 
+    fun distanciaTotalPunts(){
+        var distanciaTotal = 0.0
+        for (i in 0..llistaRutesGlobal[indexGlobal].llistaDePunts.size-2){
+            val puntInicial = llistaRutesGlobal[indexGlobal].llistaDePunts[i].coord
+            val puntFinal = llistaRutesGlobal[indexGlobal].llistaDePunts[i+1].coord
+            distanciaTotal += calcularDistancia(puntInicial.latitud,puntInicial.longitud, puntFinal.latitud, puntFinal.longitud)
+        }
+    }
+
     fun visRuta() {
         // instruccions per a visualitzar la ruta actual (l'índex el tenim en numActual
         val ruta = llistaRutesGlobal.get(indexGlobal)
         rNom.text = ruta.nom
         rDesn.text = ruta.desnivell.toString()
         rDesnAcum.text = ruta.desnivellAcumulat.toString()
+        rDistancia.text = "Placeholder"
 
         plenarTaula(ruta.llistaDePunts)
         activarButons()
