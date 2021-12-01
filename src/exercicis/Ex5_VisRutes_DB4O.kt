@@ -150,13 +150,14 @@ class FinestraCompletDistancia : JFrame() {
         }
     }
 
-    fun distanciaTotalPunts(){
+    fun distanciaTotalPunts(): Double{
         var distanciaTotal = 0.0
         for (i in 0..llistaRutesGlobal[indexGlobal].llistaDePunts.size-2){
             val puntInicial = llistaRutesGlobal[indexGlobal].llistaDePunts[i].coord
             val puntFinal = llistaRutesGlobal[indexGlobal].llistaDePunts[i+1].coord
             distanciaTotal += calcularDistancia(puntInicial.latitud,puntInicial.longitud, puntFinal.latitud, puntFinal.longitud)
         }
+        return distanciaTotal
     }
 
     fun visRuta() {
@@ -165,7 +166,7 @@ class FinestraCompletDistancia : JFrame() {
         rNom.text = ruta.nom
         rDesn.text = ruta.desnivell.toString()
         rDesnAcum.text = ruta.desnivellAcumulat.toString()
-        rDistancia.text = "Placeholder"
+        rDistancia.text = "${distanciaTotalPunts()} Km"
 
         plenarTaula(ruta.llistaDePunts)
         activarButons()
